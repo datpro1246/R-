@@ -1,0 +1,26 @@
+{
+    "id": "D9A45DC6",
+    "path": "~/Downloads/R/04-Matrix/lab2/18-Kmeans.R",
+    "project_path": "lab2/18-Kmeans.R",
+    "type": "r_source",
+    "hash": "1711254293",
+    "contents": "",
+    "dirty": false,
+    "created": 1773816428927.0,
+    "source_on_save": false,
+    "relative_order": 6,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "19,52",
+        "scrollLine": "7"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1773823618,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1773823618046,
+    "read_only": false,
+    "read_only_alternatives": []
+}
