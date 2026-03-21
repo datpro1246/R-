@@ -1,238 +1,124 @@
-# Load dữ liệu
-alcohol <- read.csv("~/Downloads/R/data/dataset - student alcohol consumption/student-alcohol.csv")
-View(alcohol)
+### Phần 1 ############################
+# # Nhiệm vụ
+# # 1. Tạo và thêm tên duy nhất vào năm vector có độ dài 8. 
+# Làm cho các kiểu dữ liệu của chúng đa dạng. 
+# Tạo một dataframe có tên "mySet1" từ các vector đã tạo.
+# # a) Hiển thị dòng thứ 5 của dataframe đã tạo.
+# # b) Thay đổi tên của cột thứ hai của dataframe 
+# mySet1 thành "column02"
+# # c) Hiển thị 7 dòng đầu tiên của dataframe mySet1. 
+# Sử dụng hai phương pháp khác nhau - với chỉ số và với một hàm.
 
-# Xem 6 dòng đầu tiên
-head(alcohol)
+vector1 <- 1:8 # vector số nguyên
+vector2 <- seq(0, 1, length.out=8) # vector số thực
+vector3 <- c(T, F,T,T, F,T,F,F)
+vector4 <- c("A", "B", "C", "D", "E", "F", "G", "H")
+vector5 <- as.factor(c("Thấp", "Cao", "Trung Bình", "Cao", "Cao", "Thấp", "Thấp", "Trung Bình"))
 
-# Kiểm tra cấu trúc
-str(alcohol)
+# Tạo dataframe
+# a
+mySet1 <- data.frame(vector1, vector2, vector3, vector4, vector5)
+mySet1[5,]
+# b
+colnames(mySet1)[2]<-"column02"
+# c
+mySet1[1:7,]
+head(mySet1, 7)
 
-# Tóm tắt thống kê
-summary(alcohol)
+# 2. Sử dụng bộ dữ liệu iris. 
+# Sử dụng chỉ số để hiển thị giá trị của mỗi 
+# dòng thứ 3 giữa quan sát thứ 40 và 120.
+# Cố gắng sử dụng một dòng lệnh duy nhất 
+# (rút gọn mã để nó vừa trong một dòng duy nhất, 
+# không có bất kỳ bước trung gian nào).
+iris
+seq(40,120,3)
+iris[seq(40,120,3),]
 
-# Loại bỏ cột đầu tiên (có thể là cột ID không cần thiết)
-head(alcohol[,-1])  # Xem trước khi xóa
-alcohol <- alcohol[,-1]  # Xóa cột 1
+# 3. Sử dụng bộ dữ liệu có sẵn "women".
+# a) Thay đổi kiểu của cột đầu tiên thành kiểu ký tự.
+# b) Thêm hai dòng mới vào bộ dữ liệu với các số tự tạo. Đảm bảo rằng bạn không làm mất các kiểu của biến trong dataframe chính trong quá trình này.
+# c) Thêm biến mới vào bộ dữ liệu và đặt tên là "shoe_size". Sử dụng hàm runif để tạo các giá trị cho biến này. Kích thước giày phải là số nguyên giữa 35 và 42.
+women
+women$height <- as.character(women$height)
+str(women)
 
-# Phát hiện missing data
-# Tìm các dòng có dữ liệu thiếu
-alcohol[!complete.cases(alcohol), ]
-# Đếm số dòng bị thiếu
-length(alcohol[!complete.cases(alcohol), ])
-
-
-# Xử lý biến số Numeric - Age
-
-# Kiểm tra phân bố tuổi
-summary(alcohol$age)
-
-# Tính trung vị (bỏ qua NA)
-median(alcohol$age, na.rm = TRUE)
-
-# Điền missing values bằng median
-alcohol$age[is.na(alcohol$age)]<- median(alcohol$age, na.rm = TRUE)
-
-# Kiểm tra xem còn NA không
-alcohol$age[is.na(alcohol$age)]
-
-# Xử lý biến phân loại - Mjob
-
-# Tìm các dòng có dữ liệu thiếu
-alcohol[!complete.cases(alcohol), ]
-# Đếm số dòng bị thiếu
-length(alcohol[!complete.cases(alcohol), ])
-
-# Điền giá trị "other" cho dòng 63 (Mjob bị thiếu)
-alcohol$Mjob[63]<-"other"
-
-alcohol[!complete.cases(alcohol), ]
-
-# 2.4. BƯỚC 3: Chuyển đổi Categorical Data thành Factor
-str(alcohol)
-
-# Biến nhị phân đơn giản (Binảy Variables)
-# School : GP / MS
-summary(factor(alcohol$school))
-
-alcohol$school<-factor(alcohol$school,
-                       levels = c("GP", "MS"),
-                       labels = c("Gabriel Pereira", "Mousino da Silveira")
-)
-# Sex - Giới tính
-summary(factor(alcohol$sex))
-
-alcohol$sex <- factor(alcohol$sex, 
-                      levels = c("F", "M"), 
-                      labels = c("female", "male"))
-
-# Address - Nơi ở
-summary(factor(alcohol$address))
-
-alcohol$address <- factor(alcohol$address, 
-                          levels = c("R", "U"), 
-                          labels = c("rural", "urban"))
-
-# Family size - Quy mô gia đình
-summary(factor(alcohol$famsize))
-
-alcohol$famsize <- factor(alcohol$famsize, 
-                          levels = c("GT3", "LE3"), 
-                          labels = c("more than 3", "less or equal to 3"))
-
-
-# Parent's cohabitation status - Tình trạng chung sống của cha mẹ
-summary(factor(alcohol$Pstatus))
-
-
-alcohol$Pstatus <- factor(alcohol$Pstatus, 
-                          levels = c("A", "T"), 
-                          labels = c("living apart", "living together"))
-
-str(alcohol)
-
-
-# Ordinal Factors (Biến có thứ tự)
-# Mother's education - Trình độ học vấn của mẹ
-summary(factor(alcohol$Medu))
-alcohol$Medu<-factor(alcohol$Medu,
-                     levels = c(0,1,2,3,4),
-                     labels = c("none", "primary", "primary higher", "secondary", "higher"),
-                     ordered = TRUE
+new_rows <- data.frame(
+  height = as.character(c(70,71)),
+  weight = c(165,168)
 )
 
-# Father's education - Trình độ học vấn của cha
-summary(factor(alcohol$Fedu))
+women <- rbind(women, new_rows)
 
-alcohol$Fedu <- factor(alcohol$Fedu, 
-                       levels = c(0, 1, 2, 3, 4), 
-                       labels = c("none", "primary", "primary higher", 
-                                  "secondary", "higher"), 
-                       ordered = TRUE)
-
-# Reason to choose this school - Lý do chọn trường
-summary(factor(alcohol$reason))
-alcohol$reason<-factor(alcohol$reason)
-
-# Kiểm tra cấu trúc sau khi chuyển đổi
-str(alcohol)
-summary(alcohol)
-
-summary(factor(alcohol$guardian))
-alcohol$guardian <- factor(alcohol$guardian)
-
-# Biến thời gian và khoảng cách
-# Travel time - Thời gian đi học
-summary(alcohol$traveltime)
-
-# Ý nghĩa: 1 - <15 phút, 2 - 15-30 phút, 3 - 30-60 phút, 4 - >1 giờ
-alcohol$traveltime <- factor(alcohol$traveltime, 
-                             levels = c(1, 2, 3, 4), 
-                             labels = c("0-15 min", "15-30 min",
-                                        "30-60 min", "above 60 min"),
-                             ordered = TRUE)
-
-# Study time - Thời gian học mỗi tuần
-summary(alcohol$studytime)
-summary(factor(alcohol$studytime))
-
-# Ý nghĩa: 1 - <2 giờ, 2 - 2-5 giờ, 3 - 5-10 giờ, 4 - >10 giờ
-alcohol$studytime <- factor(alcohol$studytime, 
-                            levels = c(1, 2, 3, 4), 
-                            labels = c("0-2 hours", "2-5 hours",
-                                       "5-10 hours", "above 10 hours"),
-                            ordered = TRUE)
-
-# Các biến nhị phân
-str(alcohol)
-
-alcohol$schoolsup<-factor(alcohol$schoolsup, levels=c("no", "yes"))
-# alcohol$famsup<-factor(alcohol$famsup, levels=c("no", "yes"))
-# alcohol$schoolsup<-factor(alcohol$schoolsup, levels=c("no", "yes"))
-# alcohol$schoolsup<-factor(alcohol$schoolsup, levels=c("no", "yes"))
-# alcohol$schoolsup<-factor(alcohol$schoolsup, levels=c("no", "yes"))
-# alcohol$schoolsup<-factor(alcohol$schoolsup, levels=c("no", "yes"))
-# alcohol$schoolsup<-factor(alcohol$schoolsup, levels=c("no", "yes"))
-# alcohol$schoolsup<-factor(alcohol$schoolsup, levels=c("no", "yes"))
-
-# BƯỚC 4: Tự động hóa với lapply()
-# Liệt kê tất cả các biến binary (yes/no)
-binaryVariables<-c("schoolsup", "famsup", "paid", "activities", 
-                   "nursery", "higher", "internet", "romantic")
-
-# Xem dữ liệu
-alcohol[,binaryVariables]
+runif(nrow(women), min=35, max=43)
+floor(runif(nrow(women), min=35, max=43))
+women$shoe_size<-floor(runif(nrow(women), min=35, max=43))
 
 
-# Kiểm tra từng biến
-lapply(alcohol[,binaryVariables], summary)
+### Phần 2 ############################
+### Sử dụng bộ dữ liệu có sẵn CO2 cho các nhiệm vụ sau:
+# 1. In giá trị CO2 uptake từ lớn nhất đến nhỏ nhất.
+CO2
+#order(CO2$uptake, decreasing = TRUE)
+#CO2[order(CO2$uptake, decreasing = TRUE),]
+sort(CO2$uptake, decreasing = TRUE)
 
-lapply(alcohol[,binaryVariables], factor)
+# 2. Hiển thị các dòng của bộ dữ liệu CO2 có Type là Quebec và Treatment là chilled.
+CO2[CO2$Type=="Quebec" & CO2$Treatment=="chilled",]
 
-lapply(alcohol[,binaryVariables], function (x) {summary(factor(x))})
+# 3. Hiển thị các dòng của bộ dữ liệu CO2 có uptake lớn hơn 40 và 
+# được sắp xếp theo giá trị conc từ nhỏ nhất đến lớn nhất.
+# Điểm thưởng nếu giữ toàn bộ mã trong một dòng duy nhất. Nếu cần tạo
+# một đối tượng trung gian, hãy đặt tên là 'temp'.
+temp<-CO2[order(CO2$conc),]
+temp[temp$uptake>40,]
 
-# Giải thích lapply:
-#   
-#   lapply(danh_sách, hàm): áp dụng hàm lên từng phần tử của danh sách
-# Trả về một list kết quả
+CO2[order(CO2$conc),][CO2[order(CO2$conc),]$uptake>40,]
 
-# Vấn đề: Biến internet có nhiều level (0, 1, NO, YES, no, yes) → lỗi nhập liệu!
+# 4. Làm thế nào để sắp xếp ngẫu nhiên bộ dữ liệu CO2? GỢI Ý: Bạn có thể cần tạo
+# một vector với các chỉ số ngẫu nhiên từ kết quả của order(runif(...)).
+# Tham khảo phần "Picking random rows from data".
+# Điểm thưởng nếu viết mã trong một dòng duy nhất không có đối tượng trung gian.
+CO2[order(runif(nrow(CO2))),]
 
-# Giải pháp: Chuẩn hóa
-alcohol$internet[alcohol$internet==0]<-"no"
-alcohol$internet[alcohol$internet=="NO"]<-"no"
-alcohol$internet[alcohol$internet==1]<-"yes"
-alcohol$internet[alcohol$internet=="YES"]<-"yes"
+### Chạy mã này trước khi thực hiện các nhiệm vụ tiếp theo
+set.seed(123)
+missCO2 <- CO2
+missCO2[c(as.integer(runif(10)*nrow(missCO2)),14:16),"uptake"] <- NA
+missCO2[c(as.integer(runif(10)*nrow(missCO2)),14:16),"conc"] <- NA
+missCO2$weight <- paste0(as.integer(runif(nrow(missCO2))*30),"kg")
 
-# Kiểm tra lại
-summary(factor(alcohol$internet))
+# 5. Hiển thị các dòng của bộ dữ liệu missCO2 có ít nhất một giá trị bị thiếu.
+missCO2[!complete.cases(missCO2),]
+# Giải thích:
+# - complete.cases(missCO2) trả về TRUE cho các dòng không có giá trị NA
+# - Toán tử ! phủ định kết quả, trả về TRUE cho các dòng có ít nhất một giá trị NA
+# - missCO2[chỉ số, ] chọn các dòng thỏa mãn điều kiện
 
-# Bài học: Trong thực tế, dữ liệu thường không "sạch" → cần kiểm tra kỹ!
+# 6. Điền các giá trị uptake bị thiếu với giá trị 20.
+missCO2[is.na(missCO2$uptake),"uptake"]<-20
+missCO2[is.na(missCO2$uptake),]
 
-# Kiểm tra lại tất cả biến binary
-lapply(alcohol[, binaryVariables], function(x) {summary(factor(x))})
+# 7. Điền các giá trị conc bị thiếu với giá trị trung bình của conc.
+mean(missCO2$conc, na.rm=TRUE)
 
-lapply(alcohol[,binaryVariables], factor)
-
-str(alcohol)
-
-alcohol[,binaryVariables] <- lapply(alcohol[,binaryVariables], factor)
-
-# BƯỚC 5: Xử lý biến mức độ (1-5 scale)
-# Các biến có mức độ từ 1-5
-leveledVariables <- c("famrel", "freetime", "goout", "Dalc", "Walc")
-
-# Xem phân bố
-lapply(alcohol[, leveledVariables], summary)
-
-# Chuyển đổi
-alcohol[, leveledVariables] <- lapply(alcohol[, leveledVariables], 
-                                      factor, 
-                                      levels = c(1, 2, 3, 4, 5), 
-                                      labels = c("very low", "low", "average",
-                                                 "high", "very high"),
-                                      ordered = TRUE)
-
-
-str(alcohol)
-
-# Health status - Tình trạng sức khỏe
-summary(alcohol$health)
-
-# Ý nghĩa: 1 = rất tệ, 2 = tệ, 3 = trung bình, 4 = tốt, 5 = rất tốt
-alcohol$health <- factor(alcohol$health, 
-                         levels = c(1, 2, 3, 4, 5), 
-                         labels = c("very bad", "bad", "average",
-                                    "good", "very good"),
-                         ordered = TRUE)
+missCO2[is.na(missCO2$conc), "conc"] <- mean(missCO2$conc, na.rm = TRUE)
+missCO2[is.na(missCO2$conc), ] 
 
 
-# BƯỚC 6: Kiểm tra kết quả cuối cùng
-# Xem cấu trúc dữ liệu sau khi clean
-str(alcohol)
+# 8. Trích xuất giá trị số từ biến weight và lưu trong cột mới
+# "weightNumber". Điểm thưởng nếu giữ mã trong một dòng,
+# không sử dụng đối tượng trung gian nào.
+missCO2$weightNumber <- as.numeric(sub( "kg", "", missCO2$weight))
 
-# Tóm tắt thống kê
-summary(alcohol)
+missCO2$weightNumber2 <- as.numeric(substring(missCO2$weight, 1, nchar(missCO2$weight)-2))
 
-# Kiểm tra missing data
-sum(!complete.cases(alcohol))  # Phải = 0
+# Lưu DATA FRAME vào một tệp CSV
+write.csv(missCO2, "missCO2.csv", row.names = TRUE)
+
+# Lưu DATA FRAME vào một tệp RDS (định dạng R)
+saveRDS(missCO2, "missCO2.rds")
+
+# Lưu nhiều đối tượng vào một tệp RData
+# save(iris, mtcars, file = "multiple_datasets.RData")
+save(iris, mtcars, file = "multiple_datasets.RData")
