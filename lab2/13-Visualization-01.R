@@ -111,7 +111,7 @@ barplot(scores,
 text(x = 1:5*1.2-0.5, # Vị trị x
      y = scores + 0.3, # Vị trí của y tên cột một chút
      labels = scores
-)
+     )
 
 # 9.2.4 Biểu đồ cột nhóm (Grouped Bar Plot)
 
@@ -739,26 +739,14 @@ par(mfrow = c(1, 1))
 
 # Sử dụng dữ liệu sau:
 subjects <- c("Toán", "Lý", "Hóa", "Văn", "Anh")
-scores   <- c(8, 7.5, 9, 8.5, 7)
-colors   <- c("steelblue", "coral", "lightgreen", "plum", "gold")
+scores <- c(8, 7.5, 9, 8.5, 7)
 
-# 1. Bar chart cơ bản
-barplot(scores, names.arg = subjects)
-
-# 2+3+4. Tiêu đề + màu + giá trị trên đầu cột
-bp <- barplot(scores,
-              names.arg = subjects,
-              main = "Điểm thi của bạn",
-              col  = colors,
-              ylim = c(0, 10))
-text(x = bp, y = scores + 0.3, labels = scores)
-
-# 5. Bar chart ngang
-barplot(scores,
-        names.arg = subjects,
-        main  = "Điểm thi của bạn",
-        col   = colors,
-        horiz = TRUE)
+# Yêu cầu:
+# 1. Vẽ bar chart cơ bản
+# 2. Thêm tiêu đề "Điểm thi của bạn"
+# 3. Tô màu khác nhau cho mỗi môn
+# 4. Thêm giá trị điểm lên đầu mỗi cột
+# 5. Vẽ bar chart ngang
 
 # ------------------------------------------------------------------------------
 # Bài tập 2: Histogram
@@ -768,40 +756,12 @@ barplot(scores,
 set.seed(2024)
 exam_scores <- rnorm(100, mean = 70, sd = 10)
 
-# 1+2+3. Histogram 10 bins, tiêu đề, nhãn trục, màu xanh lam
-hist(exam_scores,
-     breaks = 10,
-     main   = "Phân phối điểm thi của 100 sinh viên",
-     xlab   = "Điểm thi",
-     ylab   = "Tần số",
-     col    = "steelblue")
-
-# 4. Đường thẳng đứng màu đỏ tại điểm trung bình
-abline(v   = mean(exam_scores),
-       col = "red",
-       lwd = 2,
-       lty = 2)
-
-# 5. So sánh 10 bins vs 20 bins
-par(mfrow = c(1, 2))
-
-hist(exam_scores,
-     breaks = 10,
-     main   = "Histogram 10 bins",
-     xlab   = "Điểm thi",
-     ylab   = "Tần số",
-     col    = "steelblue")
-abline(v = mean(exam_scores), col = "red", lwd = 2, lty = 2)
-
-hist(exam_scores,
-     breaks = 20,
-     main   = "Histogram 20 bins",
-     xlab   = "Điểm thi",
-     ylab   = "Tần số",
-     col    = "steelblue")
-abline(v = mean(exam_scores), col = "red", lwd = 2, lty = 2)
-
-par(mfrow = c(1, 1))
+# Yêu cầu:
+# 1. Vẽ histogram với 10 bins
+# 2. Thêm tiêu đề và nhãn trục phù hợp
+# 3. Tô màu xanh lam
+# 4. Thêm đường thẳng đứng màu đỏ tại vị trí điểm trung bình
+# 5. Vẽ histogram khác với 20 bins, so sánh sự khác biệt
 
 # ------------------------------------------------------------------------------
 # Bài tập 3: Box Plot
@@ -809,15 +769,14 @@ par(mfrow = c(1, 1))
 
 # Sử dụng dữ liệu iris
 
-data(iris)
-
-# 1+2+3. Box plot so sánh Petal.Length, màu khác nhau, tiêu đề
-boxplot(Petal.Length ~ Species,
-        data = iris,
-        main = "So sánh chiều dài cánh hoa giữa 3 loài",
-        xlab = "Loài",
-        ylab = "Chiều dài cánh hoa (cm)",
-        col  = c("pink", "lightblue", "lightgreen"))
+# Yêu cầu:
+# 1. Vẽ box plot so sánh Petal.Length giữa 3 loài
+# 2. Tô màu khác nhau cho mỗi loài
+# 3. Thêm tiêu đề phù hợp
+# 4. Nhìn vào biểu đồ và trả lời:
+#    - Loài nào có petal dài nhất?
+#    - Loài nào có độ biến thiên lớn nhất?
+#    - Có outliers không? Ở loài nào?
 
 # ------------------------------------------------------------------------------
 # Bài tập 4: Scatter Plot
@@ -825,73 +784,25 @@ boxplot(Petal.Length ~ Species,
 
 # Sử dụng dữ liệu mtcars
 
-data(mtcars)
-
-# 1+2. Scatter plot hp vs mpg, màu theo cyl
-plot(mtcars$hp, mtcars$mpg,
-     main = "Mối quan hệ giữa Horsepower và MPG",
-     xlab = "Horsepower (hp)",
-     ylab = "Miles per Gallon (mpg)",
-     col  = mtcars$cyl,
-     pch  = 19)
-
-# 3. Đường hồi quy tuyến tính
-abline(lm(mpg ~ hp, data = mtcars),
-       col = "red",
-       lwd = 2)
-
-# 4. Legend giải thích màu
-legend("topright",
-       legend = c("4 cyl", "6 cyl", "8 cyl"),
-       col    = c(4, 6, 8),
-       pch    = 19)
-
-# 5. Nhận xét:
-# Xu hướng âm: hp càng cao thì mpg càng thấp — xe mạnh tiêu tốn nhiều nhiên liệu hơn
-# Xe 4 cylinder (màu xanh lá) tập trung ở vùng hp thấp, mpg cao
-# Xe 8 cylinder (màu xanh dương) tập trung ở vùng hp cao, mpg thấp
-# Mối quan hệ khá rõ ràng, đường hồi quy có độ dốc âm
+# Yêu cầu:
+# 1. Vẽ scatter plot giữa hp (horsepower) và mpg
+# 2. Tô màu các điểm theo số cy-lanh (cyl)
+# 3. Thêm đường hồi quy tuyến tính
+# 4. Thêm legend giải thích màu
+# 5. Nhận xét về mối quan hệ giữa hp và mpg
 
 # ------------------------------------------------------------------------------
 # Bài tập 5: Nhiều biểu đồ
 # ------------------------------------------------------------------------------
 
 # Sử dụng dữ liệu mtcars
-data(mtcars)
 
-par(mfrow = c(2, 2))
-
+# Yêu cầu:
+# Tạo một figure với 4 biểu đồ (2x2) để phân tích biến hp:
 # 1. Histogram của hp
-hist(mtcars$hp,
-     main = "Phân phối Horsepower",
-     xlab = "Horsepower",
-     ylab = "Tần số",
-     col  = "steelblue")
-
 # 2. Box plot của hp
-boxplot(mtcars$hp,
-        main = "Box Plot Horsepower",
-        ylab = "Horsepower",
-        col  = "lightgreen")
-
 # 3. Box plot so sánh hp theo cyl
-boxplot(hp ~ cyl,
-        data = mtcars,
-        main = "Horsepower theo số xy-lanh",
-        xlab = "Số xy-lanh",
-        ylab = "Horsepower",
-        col  = c("pink", "lightblue", "lightyellow"))
-
 # 4. Scatter plot hp vs mpg
-plot(mtcars$hp, mtcars$mpg,
-     main = "Horsepower vs MPG",
-     xlab = "Horsepower",
-     ylab = "Miles per Gallon",
-     col  = "darkblue",
-     pch  = 19)
-abline(lm(mpg ~ hp, data = mtcars), col = "red", lwd = 2)
-
-par(mfrow = c(1, 1))
 
 # ------------------------------------------------------------------------------
 # Bài tập 6: Tổng hợp
@@ -904,63 +815,15 @@ Q3 <- c(180, 170, 190, 185)
 Q4 <- c(200, 210, 195, 220)
 products <- c("Sản phẩm A", "Sản phẩm B", "Sản phẩm C", "Sản phẩm D")
 
-colors  <- c("steelblue", "coral", "lightgreen", "plum")
-quarters <- c("Q1", "Q2", "Q3", "Q4")
-
-# Ma trận doanh thu: mỗi hàng = 1 sản phẩm, mỗi cột = 1 quý
-sales_matrix <- rbind(Q1, Q2, Q3, Q4)
-colnames(sales_matrix) <- products
-
-# Tổng doanh thu mỗi quý
-total_quarter <- c(sum(Q1), sum(Q2), sum(Q3), sum(Q4))
-names(total_quarter) <- quarters
-
-# Tổng doanh thu mỗi sản phẩm
-total_product <- colSums(sales_matrix)
-
-par(mfrow = c(2, 2))
-
-# 1. Grouped bar chart so sánh doanh thu 4 quý
-barplot(sales_matrix,
-        main   = "Doanh thu theo quý",
-        xlab   = "Sản phẩm",
-        ylab   = "Doanh thu",
-        col    = colors,
-        beside = TRUE,
-        legend = quarters)
-
-# 2. Line plot từng sản phẩm qua 4 quý
-plot(1:4, Q1,
-     type = "b",
-     main = "Doanh thu từng sản phẩm qua 4 quý",
-     xlab = "Quý", ylab = "Doanh thu",
-     col  = colors[1], pch = 19, lwd = 2,
-     ylim = c(80, 230), xaxt = "n")
-axis(1, at = 1:4, labels = quarters)
-lines(1:4, Q2, col = colors[2], pch = 19, lwd = 2, type = "b")
-lines(1:4, Q3, col = colors[3], pch = 19, lwd = 2, type = "b")
-lines(1:4, Q4, col = colors[4], pch = 19, lwd = 2, type = "b")
-legend("topleft", legend = products, col = colors, lwd = 2, pch = 19)
-
-# 3. Pie chart tổng doanh thu mỗi quý
-pct <- round(total_quarter / sum(total_quarter) * 100, 1)
-pie(total_quarter,
-    labels = paste(quarters, "\n", pct, "%"),
-    main   = "Tỷ lệ doanh thu theo quý",
-    col    = colors)
-
-# 4. Bar chart tổng doanh thu mỗi sản phẩm
-barplot(total_product,
-        main   = "Tổng doanh thu mỗi sản phẩm",
-        xlab   = "Sản phẩm",
-        ylab   = "Tổng doanh thu",
-        col    = colors,
-        ylim   = c(0, max(total_product) * 1.15))
-text(x      = 1:4 * 1.2 - 0.5,
-     y      = total_product + 10,
-     labels = total_product)
-
-par(mfrow = c(1, 1))
+# Yêu cầu:
+# 1. Vẽ grouped bar chart so sánh doanh thu 4 quý
+# 2. Vẽ line plot cho từng sản phẩm qua 4 quý
+# 3. Tính tổng doanh thu mỗi quý, vẽ bar chart
+# 4. Tạo figure 2x2 hiển thị:
+#    - Grouped bar chart
+#    - Line plot tất cả sản phẩm
+#    - Pie chart tổng doanh thu mỗi quý
+#    - Bar chart tổng doanh thu mỗi sản phẩm
 
 # ==============================================================================
 # TÀI LIỆU THAM KHẢO
